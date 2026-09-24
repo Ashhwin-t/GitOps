@@ -104,3 +104,40 @@ kubectl get secret argocd-initial-admin-secret -n argocd \
   ```
 **Username:** admin\
 **Password:** `above output`
+
+# Step 3: Install ArgoCD CLI (Ubuntu/Linux)
+
+ArgoCD server runs inside Kubernetes, but to interact with it from the terminal you need the **ArgoCD CLI (`argocd`)**.  
+This is separate from the server installation.
+
+### 1. Install ArgoCD CLI
+
+```bash
+curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd
+rm argocd-linux-amd64
+```
+
+### 2. Verify installation
+
+```bash
+# Verify installation
+argocd version --client
+```
+
+### 3. Login to ArgoCD CLI
+
+```bash
+argocd login <instance_public_ip>:8080 --username admin --password <initial_password> --insecure
+```
+
+> Note: The --insecure flag is required when using port-forward with self-signed TLS certs.
+For production, you’d configure proper TLS certs (then --insecure is not needed).
+
+### 4. Get user info
+
+```bash
+argocd account get-user-info
+```
+
+---
